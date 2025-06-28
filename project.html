@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EV Battery Swapping Website</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { animation: fadeIn 1s ease-out; }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-900">
+
+  <!-- HEADER  -->
+  <header class="bg-green-600 text-white text-center p-4">
+    <h1 class="text-3xl font-bold">EV Battery Swapping</h1>
+  </header>
+
+  <!--  MAIN CONTENT  -->
+  <main>
+
+    <!-- Section 1: Intro and Battery Animation -->
+    <section class="p-4 flex flex-col md:flex-row items-center bg-green-100 fade-in">
+      <div class="md:w-1/2 mb-4">
+        <h2 class="text-2xl font-semibold mb-2">Fast. Efficient. Revolutionary.</h2>
+        <p>Battery swapping makes EV charging faster than ever before.</p>
+      </div>
+      <div class="md:w-1/2">
+        <!-- Animated Battery Block -->
+        <div id="battery" class="w-20 h-10 bg-green-500 rounded"></div>
+      </div>
+    </section>
+
+    <!-- Section 2: What is Battery Swapping -->
+    <section class="p-4 bg-white fade-in">
+      <h2 class="text-xl font-semibold mb-2">What is Battery Swapping?</h2>
+      <p class="mb-2">Battery swapping replaces empty EV batteries with fully charged ones at special stations.</p>
+      <ul class="list-disc pl-4">
+        <li>Instant energy</li>
+        <li>Lower upfront EV costs</li>
+        <li>Better battery health</li>
+      </ul>
+    </section>
+
+    <!-- Section 3: Embedded YouTube Video -->
+    <section class="p-4 bg-gray-100 fade-in">
+      <h2 class="text-xl font-semibold mb-2">Watch How It Works</h2>
+      <iframe width="700" height="350" src="https://www.youtube.com/embed/nzSiNgMwLxE?si=L3Yfhkx4Azkx5g-p"
+        title="YouTube video player" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </section>
+
+    <!-- Section 4: Quiz -->
+    <section class="p-4 bg-white fade-in" id="quizSection">
+      <h2 class="text-xl font-semibold mb-2">Quiz: Test Your Knowledge</h2>
+      <!-- Quiz questions will be injected here -->
+      <div id="quizContainer" class="space-y-4"></div>
+      <!-- Submit Button -->
+      <button onclick="submitQuiz()" class="bg-green-600 text-white px-4 py-1 rounded mt-2">Submit</button>
+      <!-- Quiz Result -->
+      <div id="quizResult" class="mt-2 font-semibold text-green-700 hidden"></div>
+    </section>
+
+  </main>
+
+  <!--  FOOTER  -->
+  <footer class="bg-green-600 text-white text-center p-2">
+    &copy; 2025 EV Battery Swapping
+  </footer>
+
+  <!--  JAVASCRIPT  -->
+  <script>
+    // Animate the battery block left and right
+    gsap.to("#battery", { duration: 2, x: 200, yoyo: true, repeat: -1 });
+
+    // Quiz data: Questions, options, and correct answer index
+    const quizData = [
+      { q: "Main benefit of battery swapping?", opts: ["Lower EV price", "Faster charging", "Bigger batteries"], correct: 1 },
+      { q: "Where are batteries swapped?", opts: ["Home", "Swap stations", "Dealership"], correct: 1 },
+      { q: "Battery swapping gives you...", opts: ["New tires", "Fully charged battery", "Faster EV"], correct: 1 }
+    ];
+
+    // Dynamically create quiz questions and options
+    const quizContainer = document.getElementById("quizContainer");
+    quizData.forEach((q, i) => {
+      const div = document.createElement("div");
+      div.innerHTML = `<p>${q.q}</p>` +
+        q.opts.map((opt, j) => `
+          <label><input type="radio" name="q${i}" value="${j}"> ${opt}</label><br>`).join('');
+      quizContainer.appendChild(div);
+    });
+
+    // Calculate quiz score and show result
+    function submitQuiz() {
+      let score = 0;
+      quizData.forEach((q, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected && parseInt(selected.value) === q.correct) score++;
+      });
+      const result = document.getElementById("quizResult");
+      result.textContent = `You scored ${score}/${quizData.length}`;
+      result.classList.remove("hidden");
+    }
+  </script>
+</body>
+</html>
